@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNewsChallenge.API", "HackerNewsChallenge.Server\HackerNewsChallenge.API.csproj", "{DB69016E-2902-42B2-9D6B-0F3627B74E04}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "hackernewschallenge.client", "hackernewschallenge.client\hackernewschallenge.client.esproj", "{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNewsChallenge.Domain", "HackerNewsChallenge.Domain\HackerNewsChallenge.Domain.csproj", "{8A65B6EF-9A33-423C-9CBE-A26A75636035}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HackerNewsChallenge.Services", "HackerNewsChallenge.Services\HackerNewsChallenge.Services.csproj", "{72C3C6E4-093B-4E93-962B-35B94DB6A2EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB69016E-2902-42B2-9D6B-0F3627B74E04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB69016E-2902-42B2-9D6B-0F3627B74E04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB69016E-2902-42B2-9D6B-0F3627B74E04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB69016E-2902-42B2-9D6B-0F3627B74E04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1DDD94B-4AD6-4285-8A8A-AF5E8193DC9C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{8A65B6EF-9A33-423C-9CBE-A26A75636035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A65B6EF-9A33-423C-9CBE-A26A75636035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A65B6EF-9A33-423C-9CBE-A26A75636035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A65B6EF-9A33-423C-9CBE-A26A75636035}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C3C6E4-093B-4E93-962B-35B94DB6A2EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C3C6E4-093B-4E93-962B-35B94DB6A2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C3C6E4-093B-4E93-962B-35B94DB6A2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C3C6E4-093B-4E93-962B-35B94DB6A2EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C7893C3-B62D-4AE9-A7AC-F9E9F87E7391}
+	EndGlobalSection
+EndGlobal

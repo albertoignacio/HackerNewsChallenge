@@ -1,0 +1,20 @@
+<div class="title">
+  <h1> Story </h1>
+</div>
+<div *ngIf="item != null" class="container">
+  <mat-card class="card">
+    <mat-card-title>{{ item.title }} </mat-card-title>
+    <mat-card-content>
+      <p><strong>Type: </strong>{{ item.type }}</p>
+      <p><strong>By: </strong>{{ item.by}}</p>
+      <p><strong>Url: </strong>{{ item.url }}</p>
+      <p><strong>Score: </strong>{{ item.score }}</p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card-actions>
+    <button routerLink="/listTopStories" mat-raised-button>Back</button>
+  </mat-card-actions>
+</div>
+
+
+

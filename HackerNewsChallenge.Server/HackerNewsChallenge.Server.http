@@ -1,0 +1,6 @@
+@HackerNewsChallenge.Server_HostAddress = http://localhost:5054
+
+GET {{HackerNewsChallenge.Server_HostAddress}}/hackernews/
+Accept: application/json
+
+###
