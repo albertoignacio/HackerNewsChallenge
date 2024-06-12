@@ -1,4 +1,5 @@
-﻿using HackerNewsChallenge.Domain.Models;
+﻿using HackerNewsChallenge.Domain.Dto;
+using HackerNewsChallenge.Domain.Models;
 using HackerNewsChallenge.Services;
 using HackerNewsChallenge.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
