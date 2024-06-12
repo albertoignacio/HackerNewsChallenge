@@ -1,17 +1,33 @@
 ﻿using HackerNewsChallenge.Domain.Models;
 using HackerNewsChallenge.Services.Interfaces;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using HackerNewsChallenge.Domain.Dto;
+using Microsoft.Extensions.Options;
 
 namespace HackerNewsChallenge.Services;
 
-public class HackerNewsChallengeService(IHttpClientFactory clientFactory, IConfiguration configuration) : IHackerNewsChallengeService
+public class HackerNewsChallengeService : IHackerNewsChallengeService
 {
-    private readonly IHttpClientFactory _httpClientFactory = clientFactory;
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IConfiguration _configuration;
+    private IMemoryCache _cache;
+    private MemoryCacheEntryOptions _cacheEntryOptions = new MemoryCacheEntryOptions()
+        .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+        .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+        .SetPriority(CacheItemPriority.Normal)
+        .SetSize(1024);
     public const string baseUrl = "https://hacker-news.firebaseio.com/v0";
     public const string storiesPath = "topstories.json?print=pretty";
     public const string itemPath = "item";
+
+    public HackerNewsChallengeService(IHttpClientFactory httpClientFactory, IConfiguration configuration, IMemoryCache cache)
+    {
+        this._httpClientFactory = httpClientFactory;
+        this._configuration = configuration;
+        this._cache = cache ?? throw new ArgumentNullException(nameof(cache));
+    }
 
     private async Task<List<int>> GetListOfItem(int page, int pageSize)
     {
@@ -21,19 +37,29 @@ public class HackerNewsChallengeService(IHttpClientFactory clientFactory, IConfi
         if (response.IsSuccessStatusCode)
         {
             var listItems = await response.Content.ReadAsStringAsync();
-            var listItemsDeserialize = (JsonSerializer.Deserialize<List<int>>(listItems));
-            var itemCount = listItemsDeserialize.Count();
-            return listItemsDeserialize.Skip((page - 1) * pageSize).Take(30).ToList();
+            var listItemsDeserialize = JsonSerializer.Deserialize<List<int>>(listItems).Skip((page - 1) * pageSize)
+                                                                                        .Take(pageSize).ToList();
+            return listItemsDeserialize;
         }
 
         throw new Exception(response.StatusCode.ToString());
     }
 
-    public async Task<IEnumerable<TopStories>> GetListTopStories(int page, int pageSize)
+    public async Task<IEnumerable<TopStories?>> GetListTopStories(int page, int pageSize)
     {
-        var listTopStories = new List<TopStories>();
+        var listStories = new List<TopStories?>();
         var listItemIds = await GetListOfItem(page, pageSize);
         var httpClient = this._httpClientFactory.CreateClient();
+        if (_cache.TryGetValue("listItemIds", out listStories))
+        {
+            List<int> cacheIdList = listStories.Select(selector: x => x.Id).ToList();
+            bool isConteined = listItemIds.All(item => cacheIdList.Contains(item));
+            if (isConteined)
+            {
+                return listStories;
+            }
+        }
+        var listTopStories = new List<TopStories?>();
         foreach (var id in listItemIds)
         {
             var url = $"{baseUrl}/{itemPath}/{id}.json?print=pretty";
@@ -45,20 +71,25 @@ public class HackerNewsChallengeService(IHttpClientFactory clientFactory, IConfi
                 listTopStories.Add(story);
             }
         }
+
+        _cache.Set("listItemIds", listTopStories, this._cacheEntryOptions);
         return listTopStories;
     }
 
     public async Task<Item> GetItem(int id)
     {
-        var httpClient = this._httpClientFactory.CreateClient();
-        var url = $"{baseUrl}/{itemPath}/{id}.json?print=pretty";
-        var response = await httpClient.GetAsync(url);
-        if (response.IsSuccessStatusCode)
+        if (!_cache.TryGetValue(id, out Item item))
         {
-            var item = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<Item>(item);
+            var httpClient = this._httpClientFactory.CreateClient();
+            var url = $"{baseUrl}/{itemPath}/{id}.json?print=pretty";
+            var response = await httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonSerializer.Deserialize<Item>((string?)await response.Content.ReadAsStringAsync());
+            }
+            throw new Exception(response.StatusCode.ToString());
         }
-        throw new Exception(response.StatusCode.ToString());
+        return item;
     }
 }
 
